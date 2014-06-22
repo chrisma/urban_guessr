@@ -1,25 +1,37 @@
+/* Start centering section */
+/* http://stackoverflow.com/questions/17520145/center-a-div-horizontally-and-vertically-responsively */
+html,body {
+	height: 100%;
+}
+
+body {
+	display: table; 
+	margin: 0 auto;
+}
+
+div#centered_helper {  
+	height: 100%;
+	display: table-cell;   
+	vertical-align: middle;    
+}
+
+div.centered {
+    width: 450px;
+}
+/* End centering section */
+
 body {
 	background-color: #f1f2f0;
 	line-height: 1.42857143;
 }
 
-div#container {
-	bottom: 0;
-	height: 300px;
-	left: 0;
-	margin: auto;
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 430px;
-
+div#content {
 	background-color: white;
 	font-size: 15px;
 	word-wrap: break-word;
 	font-family: Verdana;
 	border-radius: 5px;
 }
-
 div#ribbon {
 	background-color: #ffc652;
 	width: 30px;
@@ -51,7 +63,7 @@ div#number {
 	font-weight: bold;
 }
 
-div#content {
+div#dictionary_entry {
 	padding: 18px 25px 20px 50px;
 	color: #333333;
 }
