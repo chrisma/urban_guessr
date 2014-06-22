@@ -27,9 +27,15 @@
 			}
 
 			String.prototype.censor = function(word) {
-				// U+2588 is FULL BLOCK
-				return this.replace(new RegExp(word,'gi'), 
-									new Array(word.length+1).join('\u2588'));
+				var replacement = [];
+				word.split(' ').forEach(function(part) {
+					// U+2588 is FULL BLOCK
+					var censored = new Array(part.length+1).join('\u2588');
+					var str = '<span class="secret">' + censored + "</span>";
+					replacement.push(str);
+				})
+				replacement = replacement.join(' ');
+				return this.replace(new RegExp(word,'gi'), replacement);
 			}
 
 			String.prototype.remove = function() {
@@ -52,8 +58,8 @@
 						entry.example = entry.example.censor(entry.word);
 					})
 					var e = list[0];
-					$('#definition').text(e.definition);
-					$('#example').text(e.example);
+					$('#definition').html(e.definition);
+					$('#example').html(e.example);
 				})
 					.fail(function(data){
 						console.log("ERROR", data)

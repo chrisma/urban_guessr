@@ -84,3 +84,7 @@ input[type=text] {
 	color: #40627a;
 	outline:none; /*destroy usability, improve looks*/
 }
+
+span.secret {
+	font-style: normal;
+}
