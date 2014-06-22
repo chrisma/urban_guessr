@@ -13,14 +13,10 @@
 			</div>
 			<div id="content">
 				<div id="word">
-					Some Word
+					<input type="text" autofocus placeholder="Gimme your best guess">
 				</div>
-				<div id="definition">
-					This is a word. It has a definition. This definition appears here. As it is sourced from urbandictionary.com it will probably contain some profanity.
-				</div>
-				<div id="example">
-					This is an example where the word is used in a sentence / context.
-				</div>
+				<div id="definition">This is a word. It has a definition. This definition appears here. As it is sourced from urbandictionary.com it will probably contain some profanity.</div>
+				<div id="example">This is an example where the word is used in a sentence / context.</div>
 			</div>
 		</div>
 
@@ -55,6 +51,9 @@
 						entry.definition = entry.definition.remove(/\[/g,/\]/g).censor(entry.word);
 						entry.example = entry.example.censor(entry.word);
 					})
+					var e = list[0];
+					$('#definition').text(e.definition);
+					$('#example').text(e.example);
 				})
 					.fail(function(data){
 						console.log("ERROR", data)

@@ -11,7 +11,7 @@ div#container {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 355px;
+	width: 430px;
 
 	background-color: white;
 	font-size: 15px;
@@ -71,4 +71,16 @@ div#definition {
 div#example {
 	font-style: italic;
 	white-space: pre-wrap;
+}
+
+input[type=text] {
+	margin-bottom: 10px;
+	width: 250px;
+	border: 0px solid white;
+	border-bottom: 2px solid gray;
+	font-family: Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	color: #40627a;
+	outline:none; /*destroy usability, improve looks*/
 }
