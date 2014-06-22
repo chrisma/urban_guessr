@@ -8,35 +8,41 @@
 	</head>
 	<body>
 		<script type="text/javascript">
-			$(document).ready(function() {
-				var yql_url = "https://query.yahooapis.com/v1/public/yql";
-				var ud_random_url = "http://www.urbandictionary.com/random.php";
-				var yql_select = 'select * from html where url="' + ud_random_url + '"';
-				var xpath = '(//div[@class="word"])[1]/a | (//div[@class="example"])[1]/p | (//div[@class="meaning"])[1]//text()[not(normalize-space()="")]';
-				var url = yql_url + "?q=" + yql_select + " and xpath='" + xpath + "'&format=json&callback=?";
-				
-				// https://query.yahooapis.com/v1/public/yql?q=select * from html where url="http://www.urbandictionary.com/random.php" and xpath='(//div[@class="word"])[1]/a | (//div[@class="example"])[1]/p | (//div[@class="meaning"])[1]//text()[not(normalize-space()="")]'&format=json&callback=cb
+			//x = defaultValue(x,42), encapsulate default parameter handling
+			function defaultValue(variable, defaultVal) {
+				return typeof variable !== 'undefined' ? variable : defaultVal;
+			}
 
-				function processData(data) {
-					var results = data.query.results;
-					console.log(results.a.content);
-					console.log(results.content);
-					console.log(results.p.content || results.p);
+			String.prototype.censor = function(word) {
+				// U+2588 is FULL BLOCK
+				return this.replace(new RegExp(word,'gi'), 
+									new Array(word.length+1).join('\u2588'));
+			}
+
+			String.prototype.remove = function() {
+				var result = this;
+				for (var i = 0; i < arguments.length; i++) {
+					result = result.replace(arguments[i],'');
 				}
+				return result;
+			}
 
-				$.ajax({
-				    url: url,
-				    dataType: 'jsonp',
-				})  
-					.done(function(data) {
-				    console.log("SUCCESS");
-				    processData(data);
-				  })
-				  .fail(function(data) {
-				    console.log("ERROR", data);
-				  });
+			var list;
+			$(document).ready(function() {
+				var ud_random_url = 'http://api.urbandictionary.com/v0/random';
 
-		});
+				$.getJSON(ud_random_url, function(json){
+					console.log(json);
+					list = json["list"];
+					list.forEach(function(entry) {
+						entry.definition = entry.definition.remove(/\[/g,/\]/g).censor(entry.word);
+						entry.example = entry.example.censor(entry.word);
+					})
+				})
+					.fail(function(data){
+						console.log("ERROR", data)
+					});
+			});
 		</script>
 	</body>
 </html>
