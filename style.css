@@ -115,3 +115,9 @@ div#status {
 	right: 0;
 	padding: 25px;
 }
+
+.score_notify{
+	color:#4f4;
+	font-size: 18px;
+	font-family: Verdana;
+}

@@ -5,6 +5,7 @@
 		<title>title</title>
 		<link rel="stylesheet" href="style.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://rawgit.com/chrisma/jquery.scorenotify/master/jquery.scorenotify.js"></script>
 	</head>
 	<body>
 		<div id="centered_helper">
@@ -99,7 +100,7 @@
 						$('#status').text('CORRECT!');
 						$('#points').text(points);
 						$('#points').scoreNotify({ value: 100, add_class: 'score_notify'});
-						setTimeout(showNextEntry, 2000);
+						setTimeout(showNextEntry, 1500);
 					} else {
 						$('#status').text('WRONG!');
 						setTimeout(function(){$('#status').text('');}, 1000);
