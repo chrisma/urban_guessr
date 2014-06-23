@@ -31,19 +31,26 @@
 		</div>
 
 		<script type="text/javascript">
-			//x = defaultValue(x,42), encapsulate default parameter handling
+			// x = defaultValue(x,42), encapsulate default parameter handling
 			function defaultValue(variable, defaultVal) {
 				return typeof variable !== 'undefined' ? variable : defaultVal;
 			}
 
-			String.prototype.censor = function(word) {
+			// Censor / replace the word with black blocks,
+			// Leave the first spare letters untouched.
+			String.prototype.censor = function(word, spare, censoredClass, revealedClass) {
+				censoredClass = defaultValue(censoredClass, 'censored');
+				revealedClass = defaultValue(revealedClass, 'revealed');
+				spare = defaultValue(spare, 0);
 				var replacement = [];
 				word.split(' ').forEach(function(part) {
+					// Cannot spare more characters than the word has
+					var wordSpare = spare > part.length ? part.length : spare;
 					// U+2588 is FULL BLOCK
-					var censored = new Array(part.length+1).join('\u2588');
-					var str = '<span class="secret">' + censored + "</span>";
+					var censored = new Array(part.length+1-wordSpare).join('\u2588');
+					var str = '<span class="' + revealedClass + '">' + part.slice(0,wordSpare) + '</span>' + '<span class="' + censoredClass + '">' + censored + '</span>';
 					replacement.push(str);
-				})
+				});
 				replacement = replacement.join(' ');
 				return this.replace(new RegExp(word,'gi'), replacement);
 			}
@@ -85,6 +92,7 @@
 					var entry = list[current-1];
 					$('#definition').html(entry.definition);
 					$('#example').html(entry.example);
+					console.log("Upvotes:", entry.thumbs_up, "downvotes:", entry.thumbs_down);
 				}
 
 				$('input').keyup(function(e){
