@@ -8,16 +8,23 @@
 	</head>
 	<body>
 		<div id="centered_helper">
-			<div id="content" class="centered">
-				<div id="ribbon">
-					<div id="number">1.</div>
-				</div>
-				<div id="dictionary_entry">
-					<div id="word">
-						<input type="text" autofocus placeholder="Gimme your best guess">
+			<div id="main">
+				<div id="content">
+					<div id="ribbon">
+						<div id="number">1.</div>
 					</div>
-					<div id="definition">This is a word. It has a definition. This definition appears here. As it is sourced from urbandictionary.com it will probably contain some profanity.</div>
-					<div id="example">This is an example where the word is used in a sentence / context.</div>
+					<div id="status"></div>
+					<div id="dictionary_entry">
+						<div id="word">
+							<input type="text" autofocus placeholder="Gimme your best guess">
+						</div>
+						<div id="definition">This is a word. It has a definition. This definition appears here. As it is sourced from urbandictionary.com it will probably contain some profanity.</div>
+						<div id="example">This is an example where the word is used in a sentence / context.</div>
+					</div>
+				</div>
+				<div id="scoreboard">
+					<p><span id="currentTerm">1</span> / 10 terms</p>
+					<p><span id="points">0</span> points</p>
 				</div>
 			</div>
 		</div>
@@ -49,7 +56,10 @@
 			}
 
 			var list;
+			var current;
 			$(document).ready(function() {
+				current = 0;
+				var points = 0;
 				var ud_random_url = 'http://api.urbandictionary.com/v0/random';
 
 				$.getJSON(ud_random_url, function(json){
@@ -58,14 +68,43 @@
 					list.forEach(function(entry) {
 						entry.definition = entry.definition.remove(/\[/g,/\]/g).censor(entry.word);
 						entry.example = entry.example.censor(entry.word);
-					})
-					var e = list[0];
-					$('#definition').html(e.definition);
-					$('#example').html(e.example);
+					});
+					showNextEntry();
 				})
 					.fail(function(data){
 						console.log("ERROR", data)
 					});
+
+				function showNextEntry(){
+					console.log(current);
+					current += 1;
+					$('input').val('');
+					$('#status').text('');
+					$('#currentTerm').text(current);
+					var entry = list[current-1];
+					$('#definition').html(entry.definition);
+					$('#example').html(entry.example);
+				}
+
+				$('input').keyup(function(e){
+					if (e.keyCode == 13) { //Enter
+						checkGuess();
+					}
+				});
+
+				function checkGuess(){
+					var guess = $('input').val();
+					if (guess.toLowerCase() === list[current-1].word.toLowerCase()) {
+						points += 100;
+						$('#status').text('CORRECT!');
+						$('#points').text(points);
+						$('#points').scoreNotify({ value: 100, add_class: 'score_notify'});
+						setTimeout(showNextEntry, 2000);
+					} else {
+						$('#status').text('WRONG!');
+						setTimeout(function(){$('#status').text('');}, 1000);
+					}
+				};
 			});
 		</script>
 	</body>

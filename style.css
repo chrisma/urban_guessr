@@ -14,23 +14,25 @@ div#centered_helper {
 	display: table-cell;   
 	vertical-align: middle;    
 }
-
-div.centered {
-    width: 450px;
-}
 /* End centering section */
 
+div#main {
+	font-family: Verdana;
+	font-size: 15px;
+}
+
 body {
-	background-color: #f1f2f0;
+	background-color: #4e7ca0;;
 	line-height: 1.42857143;
 }
 
 div#content {
+	float: left;
+	width: 450px;
 	background-color: white;
-	font-size: 15px;
 	word-wrap: break-word;
-	font-family: Verdana;
 	border-radius: 5px;
+	position: relative;
 }
 div#ribbon {
 	background-color: #ffc652;
@@ -70,10 +72,6 @@ div#dictionary_entry {
 
 div#word {
 	margin-bottom: 10px;
-	font-family: Helvetica, sans-serif;
-	font-size: 20px;
-	font-weight: bold;
-	color: #40627a;
 }
 
 div#definition {
@@ -99,4 +97,21 @@ input[type=text] {
 
 span.secret {
 	font-style: normal;
+}
+
+div#scoreboard {
+	float: left;
+	background-color: #f1f2f0;
+	border-radius: 5px;
+	width: 120px;
+	height: 90px;
+	margin-left: 10px;
+	text-align: center;
+	padding: 10px;
+}
+
+div#status {
+	position: absolute;
+	right: 0;
+	padding: 25px;
 }
