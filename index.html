@@ -14,7 +14,10 @@
 					<div id="ribbon">
 						<div id="number">1.</div>
 					</div>
-					<div id="status"></div>
+					<div class="status">
+						<div id="correct">&#x2714;<!-- U+2714 HEAVY CHECK MARK --></div>
+						<div id="wrong">&#x2716;<!-- U+2716 HEAVY MULTIPLICATION X --></div>
+					</div>
 					<div id="dictionary_entry">
 						<div id="word">
 							<input type="text" autofocus placeholder="Gimme your best guess">
@@ -37,7 +40,7 @@
 			}
 
 			// Censor / replace the word with black blocks,
-			// Leave the first spare letters untouched.
+			// Leave the first spare amount letters untouched.
 			String.prototype.censor = function(word, spare, censoredClass, revealedClass) {
 				censoredClass = defaultValue(censoredClass, 'censored');
 				revealedClass = defaultValue(revealedClass, 'revealed');
@@ -87,7 +90,8 @@
 					console.log(current);
 					current += 1;
 					$('input').val('');
-					$('#status').text('');
+					$('#correct').hide();
+					$('#wrong').hide();
 					$('#currentTerm').text(current);
 					var entry = list[current-1];
 					$('#definition').html(entry.definition);
@@ -104,14 +108,14 @@
 				function checkGuess(){
 					var guess = $('input').val();
 					if (guess.toLowerCase() === list[current-1].word.toLowerCase()) {
-						points += 100;
-						$('#status').text('CORRECT!');
-						$('#points').text(points);
 						$('#points').scoreNotify({ value: 100, add_class: 'score_notify'});
+						points += 100;
+						$('#correct').show();
+						$('#points').text(points);
 						setTimeout(showNextEntry, 1500);
 					} else {
-						$('#status').text('WRONG!');
-						setTimeout(function(){$('#status').text('');}, 1000);
+						$('#wrong').show();
+						setTimeout(function(){$('#wrong').hide();}, 1000);
 					}
 				};
 			});

@@ -17,7 +17,7 @@ div#centered_helper {
 /* End centering section */
 
 div#main {
-	font-family: Verdana;
+	font-family: Helvetica, Verdana;
 	font-size: 15px;
 }
 
@@ -110,10 +110,24 @@ div#scoreboard {
 	padding: 10px;
 }
 
-div#status {
+div.status {
 	position: absolute;
 	right: 0;
-	padding: 25px;
+}
+
+div#correct {
+	display: none;
+	color: green;
+	font-size: 110px;
+	margin-top: -60px;
+	margin-right: -10px;
+}
+
+div#wrong {
+	display: none;
+	color: red;
+	font-size: 100px;
+	margin-top: -55px;
 }
 
 .score_notify{
