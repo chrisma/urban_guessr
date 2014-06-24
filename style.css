@@ -108,10 +108,10 @@ div#scoreboard {
 	background-color: #f1f2f0;
 	border-radius: 5px;
 	width: 120px;
-	height: 90px;
+	height: 120px;
 	margin-left: 10px;
 	text-align: center;
-	padding: 10px;
+	padding: 0px 10px 10px 10px;
 }
 
 div.status {
@@ -135,13 +135,18 @@ div#wrong {
 }
 
 .score_positive {
-	color: #4f4;
-	font-size: 18px;
+	color: green;
+	font-size: 35px;
 	font-family: Verdana, Helvetica;
 }
 
 .score_neutral {
 	color: black;
-	font-size: 18px;
+	font-size: 35px;
 	font-family: Verdana, Helvetica;
+}
+
+div#points {
+	font-size: 50px;
+	margin-bottom: -15px;
 }

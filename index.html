@@ -7,6 +7,7 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://rawgit.com/chrisma/jquery.scorenotify/master/jquery.scorenotify.js"></script>
 		<script src="levenshtein.js"></script>
+		<script src="animateCountTo.js"></script>
 	</head>
 	<body>
 		<div id="centered_helper">
@@ -28,8 +29,9 @@
 					</div>
 				</div>
 				<div id="scoreboard">
-					<p><span id="currentTerm">1</span> / 10 terms</p>
-					<p><span id="points">0</span> points</p>
+					<div id="points">0</div>
+					<div>points</div>
+					<p>term <span id="currentTerm">1</span> / 10</p>
 				</div>
 			</div>
 		</div>
@@ -115,9 +117,10 @@
 					var currentPoints = 100 - levenshtein(guess, currentEntry.word) * 10;
 					console.log("Guess worth:", currentPoints);
 					if (currentPoints > 70) {
+						$('#correct').show();
 						$('#points').scoreNotify({ value: currentPoints, add_class: 'score_positive'});
 						points += currentPoints;
-						$('#correct').show();
+						animateCountTo($('#points'), points, 300)
 						$('#points').text(points);
 						setTimeout(showNextEntry, showNextEntryTimeout);
 					} else {
