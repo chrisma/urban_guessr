@@ -17,7 +17,7 @@ div#centered_helper {
 /* End centering section */
 
 div#main {
-	font-family: Helvetica, Verdana;
+	font-family: Verdana, Helvetica;
 	font-size: 15px;
 }
 
@@ -95,8 +95,12 @@ input[type=text] {
 	outline:none; /*destroy usability, improve looks*/
 }
 
-span.secret {
+span.censored {
 	font-style: normal;
+}
+
+span.revealed {
+	font-weight: bold;
 }
 
 div#scoreboard {
@@ -130,8 +134,14 @@ div#wrong {
 	margin-top: -55px;
 }
 
-.score_notify{
-	color:#4f4;
+.score_positive {
+	color: #4f4;
 	font-size: 18px;
-	font-family: Verdana;
+	font-family: Verdana, Helvetica;
+}
+
+.score_neutral {
+	color: black;
+	font-size: 18px;
+	font-family: Verdana, Helvetica;
 }

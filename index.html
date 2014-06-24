@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="style.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://rawgit.com/chrisma/jquery.scorenotify/master/jquery.scorenotify.js"></script>
+		<script src="levenshtein.js"></script>
 	</head>
 	<body>
 		<div id="centered_helper">
@@ -16,7 +17,7 @@
 					</div>
 					<div class="status">
 						<div id="correct">&#x2714;<!-- U+2714 HEAVY CHECK MARK --></div>
-						<div id="wrong">&#x2716;<!-- U+2716 HEAVY MULTIPLICATION X --></div>
+						<div id="wrong">&#x2718;<!-- U+2716 HEAVY BALLOT X --></div>
 					</div>
 					<div id="dictionary_entry">
 						<div id="word">
@@ -67,18 +68,18 @@
 			}
 
 			var list;
-			var current;
+			var currentEntry;
 			$(document).ready(function() {
-				current = 0;
+				currentNumber = 0;
 				var points = 0;
+				var tries = 0;
+				var showNextEntryTimeout = 1500;
 				var ud_random_url = 'http://api.urbandictionary.com/v0/random';
 
 				$.getJSON(ud_random_url, function(json){
-					console.log(json);
 					list = json["list"];
 					list.forEach(function(entry) {
-						entry.definition = entry.definition.remove(/\[/g,/\]/g).censor(entry.word);
-						entry.example = entry.example.censor(entry.word);
+						entry.definition = entry.definition.remove(/\[/g,/\]/g);
 					});
 					showNextEntry();
 				})
@@ -87,16 +88,19 @@
 					});
 
 				function showNextEntry(){
-					console.log(current);
-					current += 1;
+					tries = 0;
+					currentNumber += 1;
+					currentEntry = list[currentNumber-1];
 					$('input').val('');
 					$('#correct').hide();
 					$('#wrong').hide();
-					$('#currentTerm').text(current);
-					var entry = list[current-1];
-					$('#definition').html(entry.definition);
-					$('#example').html(entry.example);
-					console.log("Upvotes:", entry.thumbs_up, "downvotes:", entry.thumbs_down);
+					$('#currentTerm').text(currentNumber);
+					var definition = currentEntry.definition.censor(currentEntry.word);
+					$('#definition').html(definition);
+					var example = currentEntry.example.censor(currentEntry.word);
+					$('#example').html(example);
+					console.log("Upvotes:", currentEntry.thumbs_up, "downvotes:", currentEntry.thumbs_down);
+					console.log("DON'T LOOK HERE :)", currentEntry.word);
 				}
 
 				$('input').keyup(function(e){
@@ -106,16 +110,28 @@
 				});
 
 				function checkGuess(){
+					tries += 1;
 					var guess = $('input').val();
-					if (guess.toLowerCase() === list[current-1].word.toLowerCase()) {
-						$('#points').scoreNotify({ value: 100, add_class: 'score_notify'});
-						points += 100;
+					var currentPoints = 100 - levenshtein(guess, currentEntry.word) * 10;
+					console.log("Guess worth:", currentPoints);
+					if (currentPoints > 70) {
+						$('#points').scoreNotify({ value: currentPoints, add_class: 'score_positive'});
+						points += currentPoints;
 						$('#correct').show();
 						$('#points').text(points);
-						setTimeout(showNextEntry, 1500);
+						setTimeout(showNextEntry, showNextEntryTimeout);
 					} else {
 						$('#wrong').show();
-						setTimeout(function(){$('#wrong').hide();}, 1000);
+						if (tries === 1) {
+							var definition = currentEntry.definition.censor(currentEntry.word, 1);
+							$('#definition').html(definition);
+							var example = currentEntry.example.censor(currentEntry.word, 1);
+							$('#example').html(example);
+							setTimeout(function(){$('#wrong').hide();}, 1000);
+						} else {
+							$('#points').scoreNotify({ value: 0, add_class: 'score_neutral'});
+							setTimeout(showNextEntry, showNextEntryTimeout);
+						}
 					}
 				};
 			});
