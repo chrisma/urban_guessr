@@ -37,6 +37,9 @@
 				<div>points</div>
 				<p>term <span id="currentTerm">1</span> / 10</p>
 			</div>
+			<div id="buttons">
+				<button id="next">I dunno!<br>Next!</button>
+			</div>
 		</div>
 
 		<script type="text/javascript">
@@ -123,6 +126,12 @@
 						checkGuess();
 					}
 				});
+
+				$('button#next').click(function(){
+					// TODO: refactor
+					$('#points').scoreNotify({ value: 0, add_class: 'score_neutral'});
+					setTimeout(showNextEntry, showNextEntryTimeout);
+				})
 
 				function checkGuess(){
 					tries += 1;
