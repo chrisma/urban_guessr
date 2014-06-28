@@ -11,8 +11,8 @@
 	</head>
 	<body>
 		<header>
-			<div id="top_bar"><img id="logo" src="logo.png"></div>
-			<div id="lower_bar">Get a definition from urbandictionary.com. Guess the word.</div>
+			<div id="top_bar"><img id="logo" src="try1.png"></div>
+			<div id="lower_bar">You get a definition from urbandictionary.com. You gotta guess the word.</div>
 		</header>
 		<div id="main">
 			<div id="content">
@@ -27,6 +27,7 @@
 					<div id="word">
 						<input type="text" autofocus placeholder="Gimme your best guess">
 					</div>
+					<div id="hint">XXXXXX XXXXX</div>
 					<div id="definition">This is a word. It has a definition. This definition appears here. As it is sourced from urbandictionary.com it will probably contain some profanity.</div>
 					<div id="example">This is an example where the word is used in a sentence / context.</div>
 				</div>
@@ -92,17 +93,27 @@
 					});
 
 				function showNextEntry(){
-					tries = 0;
 					currentNumber += 1;
 					currentEntry = list[currentNumber-1];
+					// Reset
+					tries = 0;
 					$('input').val('');
 					$('#correct').hide();
 					$('#wrong').hide();
+					$('#hint').hide();
+					// Update
 					$('#currentTerm').text(currentNumber);
 					var definition = currentEntry.definition.censor(currentEntry.word);
 					$('#definition').html(definition);
 					var example = currentEntry.example.censor(currentEntry.word);
 					$('#example').html(example);
+					// if neither definition or example used the word,
+					// show hint of the length
+					if (currentEntry.definition.toLowerCase().indexOf(currentEntry.word.toLowerCase()) < 0 && 
+						currentEntry.example.toLowerCase().indexOf(currentEntry.word.toLowerCase()) < 0) {
+						var censoredWord = currentEntry.word.censor(currentEntry.word);
+						$('#hint').html(censoredWord).show();
+					}					
 					console.log("Upvotes:", currentEntry.thumbs_up, "downvotes:", currentEntry.thumbs_down);
 					console.log("DON'T LOOK HERE :)", currentEntry.word);
 				}
@@ -132,6 +143,8 @@
 							$('#definition').html(definition);
 							var example = currentEntry.example.censor(currentEntry.word, 1);
 							$('#example').html(example);
+							var censoredWord = currentEntry.word.censor(currentEntry.word, 1);
+							$('#hint').html(censoredWord);
 							setTimeout(function(){$('#wrong').hide();}, 1000);
 						} else {
 							$('#points').scoreNotify({ value: 0, add_class: 'score_neutral'});

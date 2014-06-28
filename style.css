@@ -68,6 +68,11 @@ div#definition {
 	margin-bottom: 10px;
 }
 
+div#hint {
+	margin-bottom: 5px;
+	display: none;
+}
+
 div#example {
 	font-style: italic;
 	white-space: pre-wrap;
@@ -143,7 +148,7 @@ div#points {
 
 div#lower_bar {
 	background-color: #ffc652;
-	padding-left: 20px;
+	padding-left: 26px;
 }
 
 div#top_bar {
@@ -152,5 +157,5 @@ div#top_bar {
 
 img#logo {
 	height: 40px;
-	padding: 5px 0px 0px 20px;
+	padding: 10px 0px 5px 20px;
 }
