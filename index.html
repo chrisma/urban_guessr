@@ -10,9 +10,17 @@
 		<script src="animateCountTo.js"></script>
 	</head>
 	<body>
+		<div id="overlay">
+			<div id="overlaycontainer">
+				<img src="try2.png">
+				<div id="description">You get a (probably profane*) definition from <a href="http://www.urbandictionary.com" target="_blank">urbandictionary.com</a><br>You gotta guess the (urban) word.</div>
+				<button id="start">Start!</button>
+				<div id="footnote">*seriously, this is user contributed stuff from the internet.<br>You have been warned.</div>
+			</div>
+		</div>
 		<header>
-			<div id="top_bar"><img id="logo" src="try1.png"></div>
-			<div id="lower_bar">You get a definition from urbandictionary.com. You gotta guess the word.</div>
+			<div id="top_bar"><img id="logo" src="try2.png"></div>
+			<div id="lower_bar">Step 1: Get definition. Step 2: Figure it out. Step 3: ???? Step 4: PROFIT!!!</div>
 		</header>
 		<div id="main">
 			<div id="progressbar">
@@ -158,6 +166,11 @@
 					showCorrectWord();
 					setMeter((currentNumber+1)*10);
 					setTimeout(showNextEntry, showNextEntryTimeout);
+				})
+
+				$('button#start').click(function(){
+					$('#overlay').hide();
+					$('input').focus();
 				})
 
 				function checkGuess(){
