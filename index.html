@@ -10,14 +10,6 @@
 		<script src="animateCountTo.js"></script>
 	</head>
 	<body>
-		<div id="overlay">
-			<div id="overlaycontainer">
-				<img src="logo.png">
-				<div id="description">You get a (probably profane*) definition from <a href="http://www.urbandictionary.com" target="_blank">urbandictionary.com</a><br>You gotta guess the (urban) word.</div>
-				<button id="start">Start!</button>
-				<div id="footnote">*seriously, this is user contributed stuff from the internet.<br>You have been warned.</div>
-			</div>
-		</div>
 		<header>
 			<div id="top_bar"><img id="logo" src="logo.png"></div>
 			<div id="lower_bar">Step 1: Get definition. Step 2: Figure it out. Step 3: ???? Step 4: PROFIT!!!</div>
@@ -56,6 +48,24 @@
 			</div>
 			<div id="buttons">
 				<button id="next">I dunno!<br>Next word!</button>
+			</div>
+		</div>
+		<!-- Overlays -->
+		<div id="landing" class="overlay">
+			<div class="overlaycontainer">
+				<img src="logo.png">
+				<div id="description">You get a (probably profane*) definition from <a href="http://www.urbandictionary.com" target="_blank">urbandictionary.com</a><br>You gotta guess the (urban) word.</div>
+				<button id="start">Start!</button>
+				<div id="footnote">*seriously, this is user contributed stuff from the internet.<br>You have been warned.</div>
+			</div>
+		</div>
+		<div id="end" class="overlay">
+			<div class="overlaycontainer">
+				<img src="logo.png">
+				<div id="description">You got<br><span id="endpoints"></span><br>points!</div>
+				<div id="remark">(another 1000 points for actually finishing this thing.)</div>
+				<button id="reload">Play again!</button>
+				<div id="footnote">You should probably share this on some <a href="http://www.urbandictionary.com/define.php?term=Social+Media">social media</a> thing.<br>Just sayin'...</div>
 			</div>
 		</div>
 
@@ -130,6 +140,13 @@
 				}
 
 				function showNextEntry(){
+					// End of game
+					if (currentNumber === 10) {
+						points += 1000;
+						$('#endpoints').text(points);
+						$('#end').show();
+						return
+					}
 					currentNumber += 1;
 					currentEntry = list[currentNumber-1];
 					// Reset
@@ -173,8 +190,12 @@
 				})
 
 				$('button#start').click(function(){
-					$('#overlay').hide();
+					$('#landing').hide();
 					$('input').focus();
+				})
+
+				$('button#reload').click(function(){
+					location.reload();
 				})
 
 				function checkGuess(){

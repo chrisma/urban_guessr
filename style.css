@@ -247,7 +247,7 @@ span#number {
 	margin-right: 5px;
 }
 
-div#overlay {
+div.overlay {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -258,7 +258,7 @@ div#overlay {
 	color: white;
 }
 
-div#overlaycontainer {
+div.overlaycontainer {
 	width: 100%;
 	text-align: center;
 	margin: 0 auto;
@@ -269,7 +269,7 @@ div#description {
 	margin-top: 20px;
 }
 
-button#start {
+.overlaycontainer button {
 	margin-top: 50px;
 	font-size: 40px;
 }
@@ -291,4 +291,18 @@ div#twitter {
 	position: absolute;
 	top: 17px;
 	right: 20px;
+}
+
+div#end {
+	display: none;
+}
+
+span#endpoints {
+	font-size: 75px;
+}
+
+div#remark {
+	font-size: 14px;
+	color: rgb(170, 170, 170);
+	margin-top: 10px;
 }
