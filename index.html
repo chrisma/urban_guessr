@@ -15,9 +15,15 @@
 			<div id="lower_bar">You get a definition from urbandictionary.com. You gotta guess the word.</div>
 		</header>
 		<div id="main">
+			<div id="progressbar">
+				<div id="progresstext">
+					<span class="currentTerm">1</span> / 10
+				</div>
+				<div id="meter"></div>
+			</div>
 			<div id="content">
 				<div id="ribbon">
-					<div id="number">1.</div>
+					<div id="number"><span class="currentTerm">1</span>.</div>
 				</div>
 				<div class="status">
 					<div id="correct">&#x2714;<!-- U+2714 HEAVY CHECK MARK --></div>
@@ -35,7 +41,6 @@
 			<div id="scoreboard">
 				<div id="points">0</div>
 				<div>points</div>
-				<p>term <span id="currentTerm">1</span> / 10</p>
 			</div>
 			<div id="buttons">
 				<button id="next">I dunno!<br>Next word!</button>
@@ -96,6 +101,10 @@
 						console.log("ERROR", data)
 					});
 
+				function setMeter(percent) {
+					$('#meter').animate({width: percent + "%"}, showNextEntryTimeout, 'linear' );
+				}
+
 				function showCorrectWord() {
 					$('input').val(currentEntry.word);
 					$('input').prop('disabled', true);
@@ -119,9 +128,10 @@
 					$('#correct').hide();
 					$('#wrong').hide();
 					$('#hint').hide();
-					// Update
-					$('#currentTerm').text(currentNumber);
+					// Update counter
+					$('.currentTerm').text(currentNumber);
 					var definition = currentEntry.definition.censor(currentEntry.word);
+					// Update dictionary entry
 					$('#definition').html(definition);
 					var example = currentEntry.example.censor(currentEntry.word);
 					$('#example').html(example);
@@ -144,8 +154,9 @@
 
 				$('button#next').click(function(){
 					// TODO: refactor
-					$('#points').scoreNotify({ value: 0, add_class: 'score_neutral'});
+					$('#points').scoreNotify({ value: 0, add_class: 'score_neutral', delta_y: 1, offset_y: 20});
 					showCorrectWord();
+					setMeter((currentNumber+1)*10);
 					setTimeout(showNextEntry, showNextEntryTimeout);
 				})
 
@@ -156,11 +167,12 @@
 					console.log("Guess worth:", currentPoints);
 					if (currentPoints > 70) {
 						$('#correct').show();
-						$('#points').scoreNotify({ value: currentPoints, add_class: 'score_positive'});
+						$('#points').scoreNotify({ value: currentPoints, add_class: 'score_positive', delta_y: 1, offset_y: 20});
 						points += currentPoints;
 						animateCountTo($('#points'), points, 300)
 						$('#points').text(points);
 						showCorrectWord();
+						setMeter((currentNumber+1)*10);
 						setTimeout(showNextEntry, showNextEntryTimeout);
 					} else {
 						$('#wrong').show();
@@ -173,11 +185,13 @@
 							$('#hint').html(censoredWord);
 							setTimeout(function(){$('#wrong').hide();}, 1000);
 						} else {
-							$('#points').scoreNotify({ value: 0, add_class: 'score_neutral'});
+							$('#points').scoreNotify({ value: 0, add_class: 'score_neutral', delta_y: 1, offset_y: 20});
 							showCorrectWord();
+							setMeter((currentNumber+1)*10);
 							setTimeout(showNextEntry, showNextEntryTimeout);
 						}
 					}
+					
 				};
 			});
 		</script>
